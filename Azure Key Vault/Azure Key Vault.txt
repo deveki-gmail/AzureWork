@@ -1,0 +1,111 @@
+1.  Register App in Active Directoty.
+	
+2.  Create A Key Vault (If not created already).
+
+3.  Generate Key in Key Vault (Generate_Key_in_Key_Vault)
+
+4. Generate Access Token
+	1. Identify Tenant ID (Tenent_ID 4.1  Marked as Yellow Background colour)
+	2. Client ID (Client_ID 4.2)
+	3. Add Key in Keys (Active Directory -> App (Registered) -> Setting -> Keys) Key 4.3.1, Key 4.3.2
+		Generated value '+7r8JZXLx72qZDGLc2z3ykjPmvHqJfv1KAfHCYzfwGU=' will be used as client_secret.
+	4. Get Access Token From Azure Using Postman.(Get Access Token From Azure Using Postman)
+		***********************************
+		POST /e50ebc84-76f2-4636-b550-c3f7abc924af/oauth2/token HTTP/1.1
+		Host: login.microsoftonline.com
+		Content-Type: application/x-www-form-urlencoded
+		Cache-Control: no-cache
+		Postman-Token: bbff8fe3-fe62-5f97-f818-4ae30c7bea43
+		grant_type=client_credentials&client_id=c2d10814-bf98-416f-a8b5-a265791b4ed5&redirect_uri=http%3A%2F%2Frbctestapp&resource=https%3A%2F%2Fvault.azure.net&client_secret=%2B7r8JZXLx72qZDGLc2z3ykjPmvHqJfv1KAfHCYzfwGU%3D
+		***********************************
+5. Signing Using Key Vault Key: (SIGN-5.1, SIGN-5.2)
+	  Curl command format:
+	  *******************************************
+	  POST /keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749/sign?api-version=2016-10-01 HTTP/1.1
+		Host: rbc-test-keyvault.vault.azure.net
+		Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyIsImtpZCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZi8iLCJpYXQiOjE1MzYxNDY0MjksIm5iZiI6MTUzNjE0NjQyOSwiZXhwIjoxNTM2MTUwMzI5LCJhaW8iOiI0MkJnWUZBNy8xaWpJZmpOVHQrSGl5Y29abDg0Q1FBPSIsImFwcGlkIjoiYzJkMTA4MTQtYmY5OC00MTZmLWE4YjUtYTI2NTc5MWI0ZWQ1IiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTUwZWJjODQtNzZmMi00NjM2LWI1NTAtYzNmN2FiYzkyNGFmLyIsIm9pZCI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInN1YiI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInRpZCI6ImU1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZiIsInV0aSI6IkUwZkhiUGFLQlU2VG1lZEx1SGlkQUEiLCJ2ZXIiOiIxLjAifQ.NbXo2ZffXbO4m_w5tlUT57W_VISN-tN6IogNRiU4eNmcvrd_fRFt187UWiTGG9FcFCu2k67_7BoIMcxrXlVTUzLOBehPiHU6-7UsLHQV6rx9_dCluKCnLU8t0Q2zyvWKxSs2U0eJ_cFz2jbuaIKIuMEL5ifR5iV9I6e1FLBOsMbH7RTTzU_nQrFRvv3npkwHBW5Bq_VHU5f_h0G-m-Twrqnhz9dJi8wSiY4PTO44skyJBxNO4MaDO5rzhxObOdbksSxQId6j_v3x591jo3_9BYoKuXjLfWgO5XBrqUxpO5pcvXn8G2T8jiJcORtTl4OpwOymnrFl2L8mq1ymWLq2gQ
+		Content-Type: application/json
+		Cache-Control: no-cache
+		Postman-Token: 900ec4ea-3390-9901-d05c-d7c654855a40
+
+		{
+		"alg":"RS256",
+		"value":"/4n6jV+RLhiquNWCIo+kZ596bfsSDilEWstbcF1v1vE="
+		}
+	  **********************************************
+	  Response Received:
+	  *******************************************************************************************************************
+	{
+		"kid": "https://rbc-test-keyvault.vault.azure.net/keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749",
+		"value": "n2d9orv2IeW6WTlMJf6qSKr1Ltu5HCktjGInDD3r44bBxD9AMJ7rXOePcImu-vhcrMa34XsTQHw71kMwz-Yf3y4J3bkLPre6qCG3WAYesKfxi74YvTibp_DTmCGPIoZ-LeDzecK26QoQnvTEvoZBUlx2YcdKcTQtVJuxRzNvs95e5uGnyhBz8NtZ-WZspjrMv_D1kKvf8Wdxxzz0Wdb4aIS3y3CEWLY0hW9oPAGhP1UNvNN9P3lL4MOtGe7fIGgvLWrESKydxrGn3PU35Hhy3hfeWwye8z22ejBDLq-iT_w963LEQqsLjsxkXhvkPAj26UlNzjtfeXT1ynmIgFXh3A"
+	}
+	**********************************************************************************************************************
+6. Verify using Key Vault Key: (Verify-6.1,Verify-6.2)
+	Curl command format:
+	*******************************************
+	POST /keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749/verify?api-version=2016-10-01 HTTP/1.1
+	Host: rbc-test-keyvault.vault.azure.net
+	Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyIsImtpZCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZi8iLCJpYXQiOjE1MzYxNDk4MDgsIm5iZiI6MTUzNjE0OTgwOCwiZXhwIjoxNTM2MTUzNzA4LCJhaW8iOiI0MkJnWUloN3o2ekNrYlU2KzBtMldPZ2Q3ZU5MQUE9PSIsImFwcGlkIjoiYzJkMTA4MTQtYmY5OC00MTZmLWE4YjUtYTI2NTc5MWI0ZWQ1IiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTUwZWJjODQtNzZmMi00NjM2LWI1NTAtYzNmN2FiYzkyNGFmLyIsIm9pZCI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInN1YiI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInRpZCI6ImU1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZiIsInV0aSI6IktHQTNtLWRjMjBxVUtVaXVudEtWQUEiLCJ2ZXIiOiIxLjAifQ.AaDNG5iAkuVoI_3aG5fx2Atc9H9u-fTnF7OnxHYukhHOoAZX9VMvWx8yHm7jFKUerLYwZtth28DOj-zh9C4LfbNDwaiwgfehhl1ytbpNP4y91QBDsgNifEQb7-HmaH8QYvOMttYQJV52Y7diBdlHfG8QBlVhpLHW7lwv4uEI2OkbQ5u45RFtDAf_CIcvcfYEDUA3wT8c6fWfMgE814AHymMUQWvFjjYdETZ03dxwTjsUXCb3iB-EHNFz_C2UUs1pjXDNy-oiubJWwvHstzS9hULQlbPtopPaov5qCZ0EK9O7ykoh4Uzh6PEvO5bCHU6r4MbHeUdfuyDrRYoyfNqOSw
+	Content-Type: application/json
+	Cache-Control: no-cache
+	Postman-Token: 66b0a4b2-89e6-9281-e8ff-67861e1bb252
+
+	{
+		"alg":"RS256",
+		"digest":"/4n6jV+RLhiquNWCIo+kZ596bfsSDilEWstbcF1v1vE=",
+		"value":"n2d9orv2IeW6WTlMJf6qSKr1Ltu5HCktjGInDD3r44bBxD9AMJ7rXOePcImu-vhcrMa34XsTQHw71kMwz-Yf3y4J3bkLPre6qCG3WAYesKfxi74YvTibp_DTmCGPIoZ-LeDzecK26QoQnvTEvoZBUlx2YcdKcTQtVJuxRzNvs95e5uGnyhBz8NtZ-WZspjrMv_D1kKvf8Wdxxzz0Wdb4aIS3y3CEWLY0hW9oPAGhP1UNvNN9P3lL4MOtGe7fIGgvLWrESKydxrGn3PU35Hhy3hfeWwye8z22ejBDLq-iT_w963LEQqsLjsxkXhvkPAj26UlNzjtfeXT1ynmIgFXh3A"
+	}
+	*******************************************
+	Response Received:
+	*******************************************
+	{
+		"value": true
+	}
+	*******************************************
+7.  Encryption using Key Vault Key: (encrypt-7.1, encrypt-7.2)	
+	Curl command code :
+	**********************************************************
+	curl -X POST \
+	  'https://rbc-test-keyvault.vault.azure.net/keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749/encrypt?api-version=2016-10-01' \
+	  -H 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyIsImtpZCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZi8iLCJpYXQiOjE1MzYxNTE3OTcsIm5iZiI6MTUzNjE1MTc5NywiZXhwIjoxNTM2MTU1Njk3LCJhaW8iOiI0MkJnWVBpcnY3anh6Qy9wbWNVSllUckxXRG01QUE9PSIsImFwcGlkIjoiYzJkMTA4MTQtYmY5OC00MTZmLWE4YjUtYTI2NTc5MWI0ZWQ1IiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTUwZWJjODQtNzZmMi00NjM2LWI1NTAtYzNmN2FiYzkyNGFmLyIsIm9pZCI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInN1YiI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInRpZCI6ImU1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZiIsInV0aSI6IlR5elo5b1NhMWtPT2twSVRLalljQUEiLCJ2ZXIiOiIxLjAifQ.l_t_J85VjjTB4J5de9LreaZMlD8u0DT5swubI2ehRwTdF8hsbqnf3JSsBf89oCBoGEcZrW-n9Iy65RDq_zwGGpJ--wTO34qyo7wIOxCGQVn56qzFbXnEYkKyP26B8WYUgMYd6w_WhdV71k1u6VIomEjn2vOehh6-Zby6GR2a7KPytcHlhNIi9FU8O3Xgglj3uWFFKeSXFLwaFkFTN77CFN5xWEEsfsYj8JkYv_jOxamcruMvHxHiBRFN2q8xQgFXo5sfiZEIbkzrXPs3DPWZHXhtY5OFv0ooxtn6KJAVTgVBIvAyUfOZXzTkWdXnAWeE9_4ijtCZ-_ZXI2GdNulcDg' \
+	  -H 'cache-control: no-cache' \
+	  -H 'content-type: application/json' \
+	  -H 'postman-token: c82d9d34-d84c-7c72-02ad-8435d827431a' \
+	  -d '{
+	"alg":"RSA-OAEP",
+	"value":"ZGV2ZWtpbmFuZGFubWlzaHJh"
+	}'
+	**********************************************************
+	Response Received :
+	**********************************************************
+	{
+		"kid": "https://rbc-test-keyvault.vault.azure.net/keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749",
+		"value": "ETHVZQI9o-uX6hYhLL8aa0JsgBbFjuiC0tnvmkHR3mfTOLgJv-V_Q5cU0s9bvQiNvBPHKDehKLBFAX5sRdzHyJc-4pVkSVsQQm240j8GXbCGx3RkT0eraeptggl0sFa2fPNovvS4a2H-arBph8aXxSV9ZKRYIegZ3w4G9IJE4mhxyF81GEJGyzmUtI7G_-m92bdiOq1xqXxtjDixA8Ey2AsJlqZfsz43M2Po85gnAiv73K7s26hRVgvzuB34Pvnrx8LUBkSAiB8A1PBA_mQdckcfuQgD2EkLbhJyM3LHPsEtvxsR0OYEAb6GmEtx1e_vCvEMkuywoLwNScbYAOBAsQ"
+	}
+	*******************************************************************************************************
+	Note : In the curl command the value "ZGV2ZWtpbmFuZGFubWlzaHJh" is the Base64URL encoding of your data.
+	********************************************************************************************************
+8.  Decryption using Key Vault Key: (decrypt-8.1, decrypt-8.2)	
+	Curl command code :
+	**************************************************************
+	curl -X POST \
+	  'https://rbc-test-keyvault.vault.azure.net/keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749/decrypt?api-version=2016-10-01' \
+	  -H 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyIsImtpZCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZi8iLCJpYXQiOjE1MzYxNDk4MDgsIm5iZiI6MTUzNjE0OTgwOCwiZXhwIjoxNTM2MTUzNzA4LCJhaW8iOiI0MkJnWUloN3o2ekNrYlU2KzBtMldPZ2Q3ZU5MQUE9PSIsImFwcGlkIjoiYzJkMTA4MTQtYmY5OC00MTZmLWE4YjUtYTI2NTc5MWI0ZWQ1IiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTUwZWJjODQtNzZmMi00NjM2LWI1NTAtYzNmN2FiYzkyNGFmLyIsIm9pZCI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInN1YiI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInRpZCI6ImU1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZiIsInV0aSI6IktHQTNtLWRjMjBxVUtVaXVudEtWQUEiLCJ2ZXIiOiIxLjAifQ.AaDNG5iAkuVoI_3aG5fx2Atc9H9u-fTnF7OnxHYukhHOoAZX9VMvWx8yHm7jFKUerLYwZtth28DOj-zh9C4LfbNDwaiwgfehhl1ytbpNP4y91QBDsgNifEQb7-HmaH8QYvOMttYQJV52Y7diBdlHfG8QBlVhpLHW7lwv4uEI2OkbQ5u45RFtDAf_CIcvcfYEDUA3wT8c6fWfMgE814AHymMUQWvFjjYdETZ03dxwTjsUXCb3iB-EHNFz_C2UUs1pjXDNy-oiubJWwvHstzS9hULQlbPtopPaov5qCZ0EK9O7ykoh4Uzh6PEvO5bCHU6r4MbHeUdfuyDrRYoyfNqOSw' \
+	  -H 'cache-control: no-cache' \
+	  -H 'content-type: application/json' \
+	  -H 'postman-token: 1bf09f6d-f41e-4213-1a3c-b6c3be04cf42' \
+	  -d '{
+			"alg":"RSA-OAEP",
+			"value":"ETHVZQI9o-uX6hYhLL8aa0JsgBbFjuiC0tnvmkHR3mfTOLgJv-V_Q5cU0s9bvQiNvBPHKDehKLBFAX5sRdzHyJc-4pVkSVsQQm240j8GXbCGx3RkT0eraeptggl0sFa2fPNovvS4a2H-arBph8aXxSV9ZKRYIegZ3w4G9IJE4mhxyF81GEJGyzmUtI7G_-m92bdiOq1xqXxtjDixA8Ey2AsJlqZfsz43M2Po85gnAiv73K7s26hRVgvzuB34Pvnrx8LUBkSAiB8A1PBA_mQdckcfuQgD2EkLbhJyM3LHPsEtvxsR0OYEAb6GmEtx1e_vCvEMkuywoLwNScbYAOBAsQ"
+		}'
+	**************************************************************
+	**********************************************************
+	Response Received :
+	**********************************************************
+	{
+		"kid": "https://rbc-test-keyvault.vault.azure.net/keys/TestRbcKey/e5ddff4bca744abc83af02ab56dba749",
+		"value": "ZGV2ZWtpbmFuZGFubWlzaHJh"
+	}
+	*******************************************************************************************************
+	Note : In the Response Received the value "ZGV2ZWtpbmFuZGFubWlzaHJh" is the Base64URL encoding of your data.
+	********************************************************************************************************
