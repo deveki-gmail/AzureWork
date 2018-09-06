@@ -17,7 +17,29 @@
 		Cache-Control: no-cache
 		Postman-Token: bbff8fe3-fe62-5f97-f818-4ae30c7bea43
 		grant_type=client_credentials&client_id=c2d10814-bf98-416f-a8b5-a265791b4ed5&redirect_uri=http%3A%2F%2Frbctestapp&resource=https%3A%2F%2Fvault.azure.net&client_secret=%2B7r8JZXLx72qZDGLc2z3ykjPmvHqJfv1KAfHCYzfwGU%3D
-		***********************************
+		****************************************************************************************************************
+		Curl Command :
+		********************************************************************************************************************************************
+		curl -X POST \
+			https://login.microsoftonline.com/e50ebc84-76f2-4636-b550-c3f7abc924af/oauth2/token \
+			-H 'cache-control: no-cache' \
+			-H 'content-type: application/x-www-form-urlencoded' \
+			-H 'postman-token: 908cdc42-e63d-a93b-6443-bd2e7b2c8c6d' \
+			-d 'grant_type=client_credentials&client_id=c2d10814-bf98-416f-a8b5-a265791b4ed5&redirect_uri=http%3A%2F%2Frbctestapp&resource=https%3A%2F%2Fvault.azure.net&client_secret=%2B7r8JZXLx72qZDGLc2z3ykjPmvHqJfv1KAfHCYzfwGU%3D'
+		****************************************************************************************************************
+		Response Received:
+		****************************************************************************************************************
+		{
+			"token_type": "Bearer",
+			"expires_in": "3600",
+			"ext_expires_in": "0",
+			"expires_on": "1536228273",
+			"not_before": "1536224373",
+			"resource": "https://vault.azure.net",
+			"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyIsImtpZCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZi8iLCJpYXQiOjE1MzYyMjQzNzMsIm5iZiI6MTUzNjIyNDM3MywiZXhwIjoxNTM2MjI4MjczLCJhaW8iOiI0MkJnWUNqVzBUaXVkT20yZlVMVWNvc2FOZDVlQUE9PSIsImFwcGlkIjoiYzJkMTA4MTQtYmY5OC00MTZmLWE4YjUtYTI2NTc5MWI0ZWQ1IiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTUwZWJjODQtNzZmMi00NjM2LWI1NTAtYzNmN2FiYzkyNGFmLyIsIm9pZCI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInN1YiI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInRpZCI6ImU1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZiIsInV0aSI6IjhZUXJESGJGVTBXcEJWempMeDRBQUEiLCJ2ZXIiOiIxLjAifQ.d2hzLIsYqtmaQ3b2_buAFobb77FXqI7BKHGLIQ6Ll3cdBAiCy17QhhPPJqvV2NHq0sLDnLQMt9OLZUDMujXIyhz26X_D0MdWVgTj2ENdXUf4go6PkgqpF6Li3gFccqdfp2GgUrcj6Rf8KgYjNne3WBl2e0kmXoco-C6U33N-sQ0JR2ApOWY_PtY9CkNyV5fij8EwakUwDlvXHVdn3r6q013Kqsk5YZyuV8IrOuCb-Ba9WPFrB23Lrp2NX1Tb1tDFs4HOlJRoEAsnIbVSqm8Ez6FxCtjeF0RgHQx32109f6242sU9NBCWuaYprjsRIlbZVOSFT8f5j-drrO4tg5DEmg"
+		}
+		****************************************************************************************************************
+		
 5. Signing Using Key Vault Key: (SIGN-5.1, SIGN-5.2)
 	  Curl command format:
 	  *******************************************
@@ -109,3 +131,31 @@
 	*******************************************************************************************************
 	Note : In the Response Received the value "ZGV2ZWtpbmFuZGFubWlzaHJh" is the Base64URL encoding of your data.
 	********************************************************************************************************
+
+9. Create Secret. (Create-Secret-9.1,Create-Secret-9.2,Create-Secret-9.3,Create-Secret-9.4)
+
+10.Retrieve Secret. (Retrieve-Secret-10.1)
+   **********************************************************************************************************	
+   Curl Command :
+   **********************************************************************************************************
+   curl -X GET \
+  'https://rbc-test-keyvault.vault.azure.net/secrets/Admin-Password/5d532af9c7fa40ccb754bad9fbd0199f?api-version=2016-10-01' \
+  -H 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyIsImtpZCI6IjdfWnVmMXR2a3dMeFlhSFMzcTZsVWpVWUlHdyJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZi8iLCJpYXQiOjE1MzYyMjQzNzMsIm5iZiI6MTUzNjIyNDM3MywiZXhwIjoxNTM2MjI4MjczLCJhaW8iOiI0MkJnWUNqVzBUaXVkT20yZlVMVWNvc2FOZDVlQUE9PSIsImFwcGlkIjoiYzJkMTA4MTQtYmY5OC00MTZmLWE4YjUtYTI2NTc5MWI0ZWQ1IiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTUwZWJjODQtNzZmMi00NjM2LWI1NTAtYzNmN2FiYzkyNGFmLyIsIm9pZCI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInN1YiI6ImU2ZjdmZGY2LWQ0ZGMtNGEwZS1iNDIyLTUyNmJlZmIyZTM1YSIsInRpZCI6ImU1MGViYzg0LTc2ZjItNDYzNi1iNTUwLWMzZjdhYmM5MjRhZiIsInV0aSI6IjhZUXJESGJGVTBXcEJWempMeDRBQUEiLCJ2ZXIiOiIxLjAifQ.d2hzLIsYqtmaQ3b2_buAFobb77FXqI7BKHGLIQ6Ll3cdBAiCy17QhhPPJqvV2NHq0sLDnLQMt9OLZUDMujXIyhz26X_D0MdWVgTj2ENdXUf4go6PkgqpF6Li3gFccqdfp2GgUrcj6Rf8KgYjNne3WBl2e0kmXoco-C6U33N-sQ0JR2ApOWY_PtY9CkNyV5fij8EwakUwDlvXHVdn3r6q013Kqsk5YZyuV8IrOuCb-Ba9WPFrB23Lrp2NX1Tb1tDFs4HOlJRoEAsnIbVSqm8Ez6FxCtjeF0RgHQx32109f6242sU9NBCWuaYprjsRIlbZVOSFT8f5j-drrO4tg5DEmg' \
+  -H 'cache-control: no-cache' \
+  -H 'postman-token: ac14f2f0-833b-f764-3c3a-744952d67e78'
+   **********************************************************************************************************
+   Response Received:
+   **********************************************************************************************************
+   {
+    "value": "Admin123456789",
+    "contentType": "Stored admin password value is 'Admin123456789'",
+    "id": "https://rbc-test-keyvault.vault.azure.net/secrets/Admin-Password/5d532af9c7fa40ccb754bad9fbd0199f",
+    "attributes": {
+        "enabled": true,
+        "created": 1536223538,
+        "updated": 1536223538,
+        "recoveryLevel": "Purgeable"
+    }
+	}
+   *********************************************************************************************************
+	
