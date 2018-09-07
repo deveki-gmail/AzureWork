@@ -1,0 +1,24 @@
+1. Create My SQL Database (CREATE-DB-1.1,)
+
+2. Disable SSL Connection. (DisableSSL-2.1)
+
+3. Connecting From MySQL Client (Connecting From MySQL Client 3.1)
+  Commads to connect with DB Server:
+  *******************************************************************
+  C:\Program Files\MySQL\MySQL Server 5.5\bin>mysql.exe --user rbctest@rbctestmysq
+ldb --host rbctestmysqldb.mysql.database.azure.com -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 65309
+Server version: 5.6.39.0 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+  *******************************************************************
